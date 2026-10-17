@@ -1,0 +1,21 @@
+# --- Node.js / React ---
+node_modules/
+dist/
+build/
+.env
+.env.local
+
+# --- Python / AI Service ---
+__pycache__/
+*.pyc
+venv/
+.venv/
+.env
+
+# --- Operating System Files ---
+.DS_Store
+Thumbs.db
+
+# --- IDE Configs ---
+.vscode/
+.idea/
