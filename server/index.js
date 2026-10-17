@@ -7,6 +7,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const { registerChatSocket } = require('./socket/chatSocket');
 
 const app = express();
 const server = http.createServer(app);
@@ -31,22 +32,7 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date() });
 });
 
-// Socket.IO Connection Handler
-io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.id}`);
-
-  socket.on('join_room', (roomId) => {
-    socket.join(roomId);
-  });
-
-  socket.on('send_message', (data) => {
-    io.to(data.roomId).emit('receive_message', data);
-  });
-
-  socket.on('disconnect', () => {
-    console.log(`User disconnected: ${socket.id}`);
-  });
-});
+registerChatSocket(io);
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {

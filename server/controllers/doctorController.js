@@ -1,9 +1,19 @@
 const pool = require('../db');
 
 const listDoctors = async (req, res) => {
-  const { specialization, location, maxFee } = req.query;
+  const { search, specialization, location, maxFee } = req.query;
   const conditions = [];
   const values = [];
+
+  if (search !== undefined) {
+    if (typeof search !== 'string') {
+      return res.status(400).json({ error: 'search must be a string.' });
+    }
+    if (search.trim()) {
+      values.push(`%${search.trim()}%`);
+      conditions.push(`(u.full_name ILIKE $${values.length} OR d.specialization ILIKE $${values.length})`);
+    }
+  }
 
   if (specialization !== undefined) {
     if (typeof specialization !== 'string') {
