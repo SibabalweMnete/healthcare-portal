@@ -34,6 +34,11 @@ class SummaryResponse(BaseModel):
     disclaimer: str
 
 
+@app.get("/health")
+async def health_check() -> dict[str, str]:
+    return {"status": "healthy"}
+
+
 def summarize_text(text: str) -> SummaryResponse:
     normalized_text = " ".join(text.split())
     if not normalized_text:
